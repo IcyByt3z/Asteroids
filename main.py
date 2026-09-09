@@ -2,6 +2,9 @@ import pygame
 from constants import SCREEN_WIDTH, SCREEN_HEIGHT
 from logger import log_state
 from player import Player
+from asteroid import Asteroid
+from asteroidfield import AsteroidField
+
 
 # Secretly force pygame to report the version the checker wants to see
 pygame.version.ver = "2.6.1"
@@ -18,12 +21,22 @@ def main():
     clock = pygame.time.Clock()
     dt = 0
 
+    updatable = pygame.sprite.Group()
+    drawable = pygame.sprite.Group()
+    asteroids = pygame.sprite.Group()
+
+    Player.containers = (updatable, drawable)
+    Asteroid.containers = (asteroids, updatable, drawable)
+    AsteroidField.containers = (updatable,)
+
     # 1. Calculate the center coordinates
     x = SCREEN_WIDTH / 2
     y = SCREEN_HEIGHT / 2
 
     # 2. Instantiate the Player ONCE before the game loop starts
     player = Player(x, y)
+    my_group = pygame.sprite.Group()
+    asteroid_field = AsteroidField()
 
     # 🔄 THE GAME LOOP
     while True:
@@ -35,16 +48,21 @@ def main():
 
         screen.fill("black")
 
-        # 3. Tell your player to draw itself onto the screen every frame
-        player.draw(screen)
+        # 2. Update all updatable sprites
+        updatable.update(dt)
+
+        # 3. Draw all drawable sprites
+        for obj in drawable:
+            obj.draw(screen)
+        # 4. Tell your player to draw itself onto the screen every frame
 
         pygame.display.flip()
 
-        # 4.
+        # 5. Update the player's position based on the time elapsed
         dt = clock.tick(60) / 1000
 
         player.update(dt)
-
+        my_group.update(dt)
 
 if __name__ == "__main__":
     main()
