@@ -1,8 +1,10 @@
-from turtle import position
+from __future__ import annotations
 
 import pygame
+
 PLAYER_RADIUS = 20
 LINE_WIDTH = 2
+
 
 # Base class for game objects
 class CircleShape(pygame.sprite.Sprite):
@@ -20,9 +22,8 @@ class CircleShape(pygame.sprite.Sprite):
         self.radius = radius
 
     def collides_with(self, other: CircleShape) -> bool:
-        if self.position.distance_to(other.position) < self.radius + other.radius:
-            return True
-        return False
+        # This calculates the math statement and returns True or False instantly in one line!
+        return self.position.distance_to(other.position) < self.radius + other.radius
 
     def draw(self, screen: pygame.Surface) -> None:
         # must override

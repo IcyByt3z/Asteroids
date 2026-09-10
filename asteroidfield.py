@@ -1,7 +1,9 @@
 import random
 from collections.abc import Callable
+from typing import ClassVar  # 1. Added this to import ClassVar
 
 import pygame
+
 from asteroid import Asteroid
 from constants import *
 
@@ -9,9 +11,12 @@ Edge = tuple[pygame.Vector2, Callable[[float], pygame.Vector2]]
 
 
 class AsteroidField(pygame.sprite.Sprite):
-    containers: pygame.sprite.Group
+    containers: tuple[pygame.sprite.Group, ...]
+    asteroids: pygame.sprite.Group
+    spawn_timer: float
 
-    edges: list[Edge] = [
+    # 2. Changed list[Edge] to ClassVar[list[Edge]] right here!
+    edges: ClassVar[list[Edge]] = [
         (
             pygame.Vector2(1, 0),
             lambda y: pygame.Vector2(-ASTEROID_MAX_RADIUS, y * SCREEN_HEIGHT),

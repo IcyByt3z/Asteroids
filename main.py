@@ -1,16 +1,16 @@
 import sys
-from this import s
 
 import pygame
-from constants import SCREEN_WIDTH, SCREEN_HEIGHT
-from logger import log_state
-from player import Player
+
 from asteroid import Asteroid
 from asteroidfield import AsteroidField
-from logger import log_event
+from constants import SCREEN_HEIGHT, SCREEN_WIDTH
+from logger import log_event, log_state
+from player import Player
 
 # Secretly force pygame to report the version the checker wants to see
 pygame.version.ver = "2.6.1"
+
 
 def main():
     print("Starting Asteroids")
@@ -40,7 +40,6 @@ def main():
     player = Player(x, y)
     my_group = pygame.sprite.Group()
     asteroid_field = AsteroidField()
-
 
     # 🔄 THE GAME LOOP
     while True:
@@ -73,7 +72,6 @@ def main():
                 log_event("player_hit")
                 print("Game Over")
                 sys.exit()
-
 
 
 if __name__ == "__main__":
